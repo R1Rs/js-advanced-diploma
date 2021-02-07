@@ -7,8 +7,11 @@
  */
 export function* characterGenerator(allowedTypes, maxLevel) {
   // TODO: write logic here
+  console.log("generation")
 }
 
 export function generateTeam(allowedTypes, maxLevel, characterCount) {
-  // TODO: write logic here
+  // TODO: write logic 
+  console.log("generation")
+
 }

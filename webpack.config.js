@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -32,12 +33,12 @@ module.exports = {
       {
         test: /\.(png|jpg|gif)$/i,
         use: [
-            {
-                loader: 'url-loader',
-                options: {
-                    limit: 8192,
-                },
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
             },
+          },
         ],
       },
     ],
