@@ -1,5 +1,9 @@
 import themes from './themes';
 import { calcHealthLevel, calcTileType } from './utils';
+import {characterGenerator, generateTeam} from "./generators";
+import Bowman from "./Characters/Bowman";
+import Swordsman from "./Characters/Swordsman";
+import Team from "./Team";
 
 export default class GamePlay {
   constructor() {
@@ -30,6 +34,9 @@ export default class GamePlay {
 
   drawUi(theme) {
     this.checkBinding(theme);
+    let team = new Team(theme);
+    let persons = team.getTeam();
+
     this.container.innerHTML = `
       <div class="controls">
         <button data-id="action-restart" class="btn">New Game</button>
@@ -40,6 +47,7 @@ export default class GamePlay {
         <div data-id="board" class="board"></div>
       </div>
     `;
+
 
     this.newGameEl = this.container.querySelector('[data-id=action-restart]');
     this.saveGameEl = this.container.querySelector('[data-id=action-save]');
@@ -62,6 +70,8 @@ export default class GamePlay {
     }
 
     this.cells = Array.from(this.boardEl.children);
+    this.redrawPositions(persons);
+
   }
 
   /**
@@ -70,21 +80,23 @@ export default class GamePlay {
    * @param positions array of PositionedCharacter objects
    */
   redrawPositions(positions) {
+    // debugger;
     for (const cell of this.cells) {
       cell.innerHTML = '';
     }
 
     for (const position of positions) {
       const cellEl = this.boardEl.children[position.position];
+      
       const charEl = document.createElement('div');
-      charEl.classList.add('character', position.character.type);
+      charEl.classList.add('character', position.type);
 
       const healthEl = document.createElement('div');
       healthEl.classList.add('health-level');
 
       const healthIndicatorEl = document.createElement('div');
-      healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(position.character.health)}`);
-      healthIndicatorEl.style.width = `${position.character.health}%`;
+      healthIndicatorEl.classList.add('health-level-indicator', `health-level-indicator-${calcHealthLevel(position.health)}`);
+      healthIndicatorEl.style.width = `${position.health}%`;
       healthEl.appendChild(healthIndicatorEl);
 
       charEl.appendChild(healthEl);
