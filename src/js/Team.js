@@ -8,23 +8,36 @@ import { generateTeam } from "./generators";
 
 export default class Team {
     constructor(theme) {
-        this.bowman = new Bowman();
-        this.swordsman = new Swordsman();
-        this.daemon = new Daemon();
-        this.magician = new Magician();
-        this.undead = new Undead();
-        this.vampire = new Vampire();
+        this.bowman = new Bowman(this.maxlevel);
+        this.swordsman = new Swordsman(this.maxlevel);
+        this.daemon = new Daemon(this.maxlevel);
+        this.magician = new Magician(this.maxlevel);
+        this.undead = new Undead(this.maxlevel);
+        this.vampire = new Vampire(this.maxlevel);
         this.theme = theme;
         this.maxlevel = 1; 
+        this.personsPlayer = [];
+        this.personsComp = [];
+        this.persons = [];
     }
 
     getTeam() {
         if (this.theme === "prairie") {
-            let persons = [];
+            this.personsPlayer.push(...generateTeam([this.bowman, this.swordsman], this.maxlevel, 2, 56)); 
+            this.personsComp.push(...generateTeam([this.bowman, this.swordsman, this.daemon, this.magician, this.undead, this.vampire], this.maxlevel, 2, 62))
+            this.persons = [...this.personsPlayer, ...this.personsComp];
+            // debugger;
+            return this.persons;
+        }
+        if (this.theme === "desert") {
+            this.persons.forEach( pers => {
+                if (pers.health > 0) {
+                    pers.health = 50;
+                    pers.level += 1;
+                }
+            });
 
-            persons.push(...generateTeam([this.bowman, this.swordsman], 1, 2, 56)); 
-            persons.push(...generateTeam([this.bowman, this.swordsman, this.daemon, this.magician, this.undead, this.vampire], 1, 2, 62))
-            return persons;
+
         }
     }
  

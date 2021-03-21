@@ -9,26 +9,38 @@ import Team from "./Team";
  */
 export function* characterGenerator(allowedTypes, maxLevel, position) {
   if (maxLevel === 1) {
-      let positionNow  = position;
-      for (let i = 0; i < allowedTypes.length; i ++) {
-      console.log(positionNow)  
+      for (let i = 0; i < allowedTypes.length; i ++){
       let persona = allowedTypes[Math.floor(Math.random() * allowedTypes.length)];
-      persona.position = positionNow; 
-     
-      yield persona;
-      positionNow ++ ;
+      let positionNow ;
+      if (position === 56) {
+        persona.position = Math.abs(56 - (Math.floor(Math.random() * 10) * 8)) + i;
+        console.log(position);
+      } else if (position === 62) {
+        persona.position = Math.abs(Math.ceil((6 + ((Math.floor(Math.random() * 10)) * 8 - 56)))) + i;
+        console.log(persona.position);
+      }
+
+      // persona.position = position + i;
+      // console.log(JSON.stringify(persona));
+      console.log(JSON.parse(JSON.stringify(persona)));
+      // yield persona;
+      yield JSON.parse(JSON.stringify(persona));
   };
   }
-} 
+}
+
 
 
 
 export function generateTeam(allowedTypes, maxLevel, characterCount, position) {
-  let persons = [];
+  // debugger;
   let person = characterGenerator(allowedTypes, maxLevel, position);
-  for (let i = 1; i <= characterCount; i ++) {
-    persons.push(person.next().value)
+  let persons = [];
+
+  for (let i = 0; i < characterCount; i ++) {
+    
+    let value = person.next().value;
+    persons.push(value);  
   }
-  console.log(persons);
   return persons;
 }
